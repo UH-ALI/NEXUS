@@ -1,47 +1,41 @@
-# NEXUS — Autonomous AI Productivity Agent
+# NEXUS
 
-NEXUS accepts a goal and optional PDF, DOCX, or TXT material, plans the work, selects from fixed local tools, runs them, checks quiz structure, and synthesizes a downloadable response. Built with Streamlit, Python, and the Groq API.
+### From a goal to a plan, useful work, and a result you can download.
 
-## Run locally
+NEXUS is an AI productivity agent for turning learning material into practical outputs. Describe what you need, optionally upload a PDF, DOCX, or TXT file, and NEXUS plans the work, selects tools, runs them, checks quiz formatting, and brings the results together.
 
-Requires Python 3.10 or newer and a Groq API key.
+**Goal → Plan → Tools → Check → Answer**
 
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-Copy-Item .streamlit\secrets.toml.example .streamlit\secrets.toml
-```
+Built with **Python, Streamlit, and Groq**. The default model is **GPT-OSS-20B**, served through Groq.
 
-Put your own key in `.streamlit/secrets.toml` (never commit or share that file):
+---
 
-```toml
-GROQ_API_KEY = "your-key"
-GROQ_MODEL = "openai/gpt-oss-20b"
-```
+## Try it
 
-Run the app from this repository root:
+Upload lecture notes and ask:
 
-```powershell
-streamlit run app.py
-```
+> Analyze these notes, create a 7-day study plan, and generate 10 multiple-choice questions.
 
-## Project layout
+NEXUS extracts the text, selects the relevant tools, shows the run progress, checks the quiz structure, and provides a downloadable result.
 
-```text
-nexus-agent/
-├── app.py                    # Streamlit UI
-├── nexus/                    # Agent, planner, provider, document service, tools
-├── .streamlit/config.toml    # Safe UI settings
-├── .streamlit/secrets.toml.example
-├── requirements.txt
-├── PRD.md
-├── system-design.md
-├── SECURITY.md
-├── DEPLOYMENT.md
-└── POST-SUBMISSION.md
-```
+## What it does
 
-## Current scope
+- **Plans the task:** turns your goal into steps and selects from registered tools.
+- **Reads documents:** extracts text from PDF, DOCX, and TXT uploads.
+- **Creates study plans:** organizes topics, priorities, a 7-day schedule, and revision strategy.
+- **Generates quizzes:** creates 10 MCQs with options, answers, and explanations; checks the format and attempts one repair if needed.
+- **Writes reports:** produces an executive summary, findings, analysis, recommendations, and action items.
+- **Shows its work:** displays the plan, selected tools, progress, document status, and quiz-format check.
+- **Delivers the result:** shows the final response and lets you download it as Markdown.
 
-NEXUS uses one orchestrating agent and an allow-listed set of Python tools. It does not currently use RAG, embeddings, OCR, web search, persistent memory, or a multi-agent framework. Quiz validation checks output structure, not factual correctness. See [the PRD](PRD.md), [system design](system-design.md), and [security notes](SECURITY.md).
+## How it works
+
+```mermaid
+flowchart LR
+    A[Goal + optional document] --> B[Extract document text]
+    B --> C[LLM planner]
+    C --> D[Validate tool choices]
+    D --> E[Run registered Python tools]
+    E --> F[Check quiz format]
+    F --> G[LLM synthesis]
+    G --> H[Answer + download]
